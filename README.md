@@ -1,7 +1,16 @@
-# Vue 3 + Vite
+# The Compendium of Infinite Nothing
+The name of the site is The Compendium of Infinite Nothing.
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+This site allows a user to create and save characters. It also features a list of characters.
 
-## Recommended IDE Setup
+Each created character includes an image and a description provided by the user.
 
-- [VS Code](https://code.visualstudio.com/) + [Vue - Official](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (previously Volar) and disable Vetur
+Users can sign in and register to gain access to the feed.
+
+Uses Vue, javascript, php.
+
+# Group members:
+Ariel,
+Adel,
+Ben,
+Safa
