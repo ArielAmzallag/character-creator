@@ -4,6 +4,12 @@
         <nav>
           <ul>
             <li><router-link to="/">Main Page</router-link></li>
+            <li v-if="!isLoggedIn"><router-link to="/register">Register</router-link></li>
+            <li v-if="!isLoggedIn"><router-link to="/sign-in">Sign-In</router-link></li>
+            <li><router-link to="/feed">Feed</router-link></li>
+            <li v-if="isLoggedIn"><router-link to="/profile">Profile</router-link></li>
+            <li v-if="userEmail">{{ userEmail }}</li>
+            <li v-if="isLoggedIn"><button @click="handleSignOut">Sign out</button></li>
           </ul>
         </nav>
       </header>
@@ -20,7 +26,46 @@
   </template>
   
   <script>
+  import { onMounted, ref, reactive } from 'vue';
+  import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+  import { useRouter } from 'vue-router';
+  
+  export default {
+    name: 'MainLayout',
+    setup() {
+      const isLoggedIn = ref(false);
+      const userEmail = ref(localStorage.getItem('userEmail'));
+      const router = useRouter();
+      const isNavbarVisible = ref(false);
+      let auth;
+  
+      onMounted(() => {
+        auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+          isLoggedIn.value = !!user;
+          if (user) {
+            userEmail.value = localStorage.getItem('userEmail');
+          }
+        });
+      });
 
+
+      const handleSignOut = () => {
+        signOut(auth).then(() => {
+          localStorage.removeItem('userEmail');
+          userEmail.value = null;
+          router.push("/");
+        });
+      };
+  
+      return {
+        isLoggedIn,
+        userEmail,
+        handleSignOut,
+        isNavbarVisible,
+      };
+    }
+  }
   </script>
 
 <style lang="scss" scoped>
@@ -56,23 +101,6 @@
           &:hover {
             color: var(--accent-color);
           }
-        }
-      }
-      .navbar-toggle {
-        background: none;
-        border: none;
-        color: #fff;
-        font-size: 2rem;
-        cursor: pointer;
-        display: none;
-        position: absolute;
-        top: 0;
-        right: 0;
-        padding: 20px;
-        z-index: 101;
-    
-        &:focus {
-          outline: none;
         }
       }
     }

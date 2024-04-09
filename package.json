@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "date-fns": "^3.6.0",
     "firebase": "^10.10.0",
     "pinia": "^2.1.7",
     "sass": "^1.74.1",
