@@ -1,0 +1,11 @@
+{
+  "projects": {
+    "default": "character-creator-26852"
+  },
+  "targets": {},
+  "etags": {
+    "character-creator-26852": {
+      "extensionInstances": {}
+    }
+  }
+}
