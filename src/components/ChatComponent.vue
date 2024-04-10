@@ -29,10 +29,9 @@
   
   onMounted(() => {
     subscribeToChat((fetchedMessages) => {
-      // Assuming messages include 'createdBy' as username and 'createdAt' as timestamp
       messages.value = fetchedMessages.map(message => ({
         ...message,
-        createdBy: message.createdBy || 'Anonymous', // Fallback to 'Anonymous'
+        createdBy: message.createdBy || 'Anonymous',
         createdAt: message.createdAt ? new Date(message.createdAt) : new Date(),
       }));
     });
@@ -40,7 +39,6 @@
   
   const handleSend = () => {
     if (newMessage.value.trim() !== '') {
-      // Additional parameter for username; adjust based on your app's auth setup
       sendMessage(newMessage.value, auth.currentUser.displayName || 'Anonymous', Date.now());
       newMessage.value = '';
     }
@@ -59,6 +57,7 @@
   </script>
   
   <style scoped lang="scss">
+  
   .chat-container {
     display: flex;
     flex-direction: column;

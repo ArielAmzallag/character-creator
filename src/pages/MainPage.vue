@@ -22,7 +22,6 @@ const db = getFirestore();
 const characters = ref([]);
 const randomCharacters = ref([]);
 
-// Fetch all public characters and randomly pick two
 const loadRandomCharacters = async () => {
   const q = query(collection(db, 'characters'), where('isPublic', '==', true));
   const querySnapshot = await getDocs(q);
@@ -36,11 +35,10 @@ const loadRandomCharacters = async () => {
       detailLink: `/characters/${doc.id}`
     };
   });
-  // Randomly pick two characters
   for (let i = 0; i < 2 && allCharacters.length; i++) {
     const randomIndex = Math.floor(Math.random() * allCharacters.length);
     randomCharacters.value.push(allCharacters[randomIndex]);
-    allCharacters.splice(randomIndex, 1); // Remove the picked character
+    allCharacters.splice(randomIndex, 1);
   }
 };
 

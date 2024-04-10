@@ -1,8 +1,6 @@
 <template>
     <MainLayout>
         <h1>Create an account</h1>
-        <!-- <h3>Phone Number</h3>
-        <p><input type="text" placeholder="Phone Number" v-model="phoneNumber"/></p> -->
         <h3>Email</h3>
         <p><input type="text" placeholder="Email" v-model="email"/></p>
         <h3>Password</h3>

@@ -104,8 +104,6 @@
       }
     }
   
-    // ...include additional logic for other profile updates, if any
-  
     if (updatesApplied) {
       alert('Profile updated successfully!');
     }
@@ -126,7 +124,6 @@
         user.value = newUser;
         email.value = newUser.email;
         username.value = newUser.displayName;
-        // Here you would also fetch the bio if it's stored outside of the auth state
       }
     });
   });

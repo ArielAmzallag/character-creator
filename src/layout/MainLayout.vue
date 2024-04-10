@@ -1,19 +1,17 @@
 <template>
     <div class="main-layout">
       <header>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <nav>
-          <ul>
-            <li><router-link to="/">Main Page</router-link></li>
-            <li v-if="!isLoggedIn"><router-link to="/register">Register</router-link></li>
-            <li v-if="!isLoggedIn"><router-link to="/sign-in">Sign-In</router-link></li>
-            <li v-if="isLoggedIn"><router-link to="/character-creator">Character Creator</router-link></li>
-            <li v-if="isLoggedIn"><router-link to="/compendium">Compendium</router-link></li>
-            <li v-if="isLoggedIn"><router-link to="/public-characters">Public Characters</router-link></li>
-            <li><router-link to="/feed">Feed</router-link></li>
-            <li v-if="isLoggedIn"><router-link to="/profile">Profile</router-link></li>
-            <li v-if="userEmail">{{ userEmail }}</li>
-            <li v-if="isLoggedIn"><button @click="handleSignOut">Sign out</button></li>
-          </ul>
+            <li><router-link to="/"><i class="fas fa-home"></i>Main Page</router-link></li>
+            <li v-if="!isLoggedIn"><router-link to="/register"><i class="fas fa-user-plus"></i>Register</router-link></li>
+            <li v-if="!isLoggedIn"><router-link to="/sign-in"><i class="fas fa-sign-in-alt"></i>Sign-In</router-link></li>
+            <li v-if="isLoggedIn"><router-link to="/character-creator"><i class="fas fa-user-cog"></i>Character Creator</router-link></li>
+            <li v-if="isLoggedIn"><router-link to="/compendium"><i class="fas fa-book"></i>Compendium</router-link></li>
+            <li v-if="isLoggedIn"><router-link to="/public-characters"><i class="fas fa-users"></i>Public Characters</router-link></li>
+            <li><router-link to="/feed"><i class="fas fa-rss"></i>Feed</router-link></li>
+            <li v-if="isLoggedIn"><router-link to="/profile"><i class="fas fa-user"></i>Profile</router-link></li>
+            <li v-if="isLoggedIn"><button @click="handleSignOut"><i class="fas fa-sign-out-alt"></i>Sign out</button></li>
         </nav>
       </header>
       
@@ -78,7 +76,7 @@
   min-height: 100vh;
 
   header {
-    background-color: var(--primary-color);
+    background-color: var(--primary-color, #333); /* Default color added for safety */
     padding: 20px 0;
     width: 100%;
     position: fixed;
@@ -87,23 +85,38 @@
     z-index: 100;
 
     nav {
-      width: 100%;
-      ul {
-        list-style-type: none;
-        display: flex;
-        justify-content: center;
-        margin: 0;
-        padding: 0;
-
-        li {
-          margin: 0 15px;
-        }
-
-        a {
-          color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px; /* Spacing between menu items */
+      list-style: none; /* Removes bullet points */
+      padding: 0;
+      margin: 0 auto;
+      width: 90%; /* Adjust based on your design preference */
+      
+      li {
+        display: inline-block; /* Align items horizontally */
+        
+        a, button {
+          display: flex;
+          align-items: center;
+          gap: 5px; /* Spacing between icon and text */
+          color: #fff; /* Text color */
+          text-decoration: none; /* Removes underline from links */
           &:hover {
-            color: var(--accent-color);
+            color: var(--accent-color, lightblue); /* Change as needed */
           }
+        }
+      }
+
+      button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #fff; /* Text color, ensuring consistency with links */
+
+        &:hover {
+          color: var(--accent-color, lightblue); /* Hover state */
         }
       }
     }
@@ -111,33 +124,30 @@
 
   main {
     padding: 20px;
-    padding-top: 60px;
+    padding-top: 80px; /* Increased top padding to account for fixed header */
     flex-grow: 1;
     background-color: transparent;
   }
 
   footer {
-    background-color: var(--primary-color);
-    color: var(--text-color);
+    background-color: var(--primary-color, #333); /* Default color added for safety */
+    color: var(--text-color, #fff); /* Default text color */
     text-align: center;
     padding: 10px;
-    border-top: 1px solid var(--border-color);
+    border-top: 1px solid var(--border-color, #444); /* Default border color */
     width: 100%;
     position: fixed;
     bottom: 0;
     left: 0;
     z-index: 100;
-    main {
-      padding-bottom: 50px;
-    }
 
     p {
       margin: 0;
     }
   }
 }
-
 </style>
+
 
 
   

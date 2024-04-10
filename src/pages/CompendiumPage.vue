@@ -19,6 +19,9 @@
             {{ selectedCharacter.name }}
             <button @click="() => updateSimpleField('name')"><img src="../assets/svg/edit-icon.svg" alt="Edit" /></button>
           </h2>
+          <div v-if="selectedCharacter.imageUrl" class="character-image-container">
+            <img :src="selectedCharacter.imageUrl" alt="Character Image" class="character-image">
+          </div>
           <div v-if="selectedCharacter.alias" class="character-alias">
             <span class="title">Alias:</span>
             <span class="value">{{ selectedCharacter.alias }}</span>
@@ -50,6 +53,19 @@
                 </div>
               </div>
           </div>
+
+          <div v-if="selectedCharacter.skills.length" class="character-skills">
+            <h3>Skills
+              <button @click="() => updateArrayField('skills')" class="edit-icon"><img src="../assets/svg/edit-icon.svg" alt="Edit" /></button>
+            </h3>
+            <div v-for="skill in selectedCharacter.skills" :key="skill" class="skill-branch">
+                <div class="skill-node">
+                <div class="skill-icon"></div>
+                <div class="skill-name">{{ skill }}</div>
+                </div>
+            </div>
+          </div>
+          
           <div v-if="selectedCharacter && selectedCharacter.appearance" class="character-appearance">
             <h3>Appearance
               <button @click="() => updateMapField('appearance')" class="edit-icon"><img src="../assets/svg/edit-icon.svg" alt="Edit" /></button>
@@ -86,27 +102,14 @@
             </h3>
             <p>{{ selectedCharacter.background }}</p>
           </div>
-          <div v-if="selectedCharacter.skills.length" class="character-skills">
-            <h3>Skills
-              <button @click="() => updateArrayField('skills')" class="edit-icon"><img src="../assets/svg/edit-icon.svg" alt="Edit" /></button>
-            </h3>
-            <div v-for="skill in selectedCharacter.skills" :key="skill" class="skill-branch">
-                <div class="skill-node">
-                <div class="skill-icon"></div>
-                <div class="skill-name">{{ skill }}</div>
-                </div>
-            </div>
-          </div>
-          
+
           <div v-if="selectedCharacter.notes" class="character-notes">
             <h3>Notes
                 <button @click="() => updateSimpleField('notes')"><img src="../assets/svg/edit-icon.svg" alt="Edit" /></button>
             </h3>
             <p>{{ selectedCharacter.notes }}</p>
           </div>
-          <div v-if="selectedCharacter.imageUrl" class="character-image-container">
-            <img :src="selectedCharacter.imageUrl" alt="Character Image" class="character-image">
-          </div>
+
           <div class="character-visibility">
             <span>This character is <strong>{{ selectedCharacter.isPublic ? 'Public' : 'Private' }}</strong>.</span>
           </div>
@@ -159,25 +162,21 @@ const formattedAppearance = computed(() => {
   });
 });
 
-// Async function to update simple fields
 const updateSimpleField = async (field, value) => {
   if (!selectedCharacter.value) {
     alert('No character selected.');
     return;
   }
 
-  // Check if the field exists on the object to avoid runtime errors.
   if (!(field in selectedCharacter.value)) {
     console.error(`Field '${field}' does not exist on the selected character.`);
     alert(`Error: Field '${field}' does not exist.`);
     return;
   }
 
-  // No change to the prompting logic here
   const newValue = value || prompt(`Enter new ${field}:`, selectedCharacter.value[field]);
   
   if (newValue !== null && newValue.trim() !== '') {
-    // Directly updating the field on the selectedCharacter's value.
     selectedCharacter.value[field] = newValue.trim();
     const characterDocRef = doc(db, 'characters', selectedCharacter.value.id);
 
@@ -192,7 +191,6 @@ const updateSimpleField = async (field, value) => {
 };
 
 
-// Async function to update maps (objects) like attributes and appearance
 const updateMapField = async (field) => {
   const currentValuesString = JSON.stringify(selectedCharacter.value[field], null, 2);
   const newValuesString = prompt(`Edit ${field} (JSON format):`, currentValuesString);
@@ -200,13 +198,10 @@ const updateMapField = async (field) => {
   if (newValuesString !== null) {
     try {
       const newValues = JSON.parse(newValuesString);
-      // Update local state for reactivity
       selectedCharacter.value[field] = newValues;
       
-      // Reference to the Firestore document
       const characterDocRef = doc(db, 'characters', selectedCharacter.value.id);
       
-      // Firestore update
       await updateDoc(characterDocRef, { [field]: newValues });
       alert(`${field.charAt(0).toUpperCase() + field.slice(1)} updated successfully.`);
     } catch (error) {
@@ -216,25 +211,19 @@ const updateMapField = async (field) => {
   }
 };
 
-// Async function to update array fields like equipment and skills
 const updateArrayField = async (field) => {
   const currentValuesString = JSON.stringify(selectedCharacter.value[field], null, 2);
   const newValuesString = prompt(`Edit ${field} (JSON array format):`, currentValuesString);
 
   if (newValuesString !== null) {
     try {
-      // Attempt to parse the updated JSON string to an array
       const newValues = JSON.parse(newValuesString);
       
-      // Basic validation to ensure the parsed value is indeed an array
       if (Array.isArray(newValues)) {
-        // Update local state for reactivity
         selectedCharacter.value[field] = newValues;
         
-        // Reference to the Firestore document
         const characterDocRef = doc(db, 'characters', selectedCharacter.value.id);
         
-        // Firestore update
         await updateDoc(characterDocRef, { [field]: newValues });
         alert(`${field.charAt(0).toUpperCase() + field.slice(1)} updated successfully.`);
       } else {
@@ -260,7 +249,6 @@ const selectCharacter = (character) => {
 let unsubscribe;
 onAuthStateChanged(auth, user => {
   if (user) {
-    // Query to get the characters created by the logged-in user
     const q = query(collection(db, 'characters'), where('createdBy', '==', user.uid));
     unsubscribe = onSnapshot(q, (querySnapshot) => {
       characters.value = querySnapshot.docs.map(doc => ({
@@ -271,12 +259,10 @@ onAuthStateChanged(auth, user => {
       console.error("Error fetching characters: ", error);
     });
   } else {
-    // Clear characters if there is no user
     characters.value = []; 
   }
 });
 
-// Function to delete a selected character
 const deleteCharacter = async (characterId) => {
   console.log('Attempting to delete character with ID:', characterId);
   if (!characterId) {
@@ -298,7 +284,6 @@ const deleteCharacter = async (characterId) => {
   }
 };
 
-// Cleanup the listener when the component unmounts
 onUnmounted(() => {
   if (unsubscribe) {
     unsubscribe();
@@ -310,6 +295,9 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" scoped>
+button{
+  background: none ;
+}
 .character-dashboard {
     display: flex;
     max-width: 95%;
@@ -543,8 +531,6 @@ onUnmounted(() => {
       }
       
 
-      
-      /* To place the edit button next to section titles */
       h3 {
         display: flex;
         justify-content: space-between;

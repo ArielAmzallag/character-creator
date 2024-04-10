@@ -101,9 +101,9 @@
     .popup-content {
       position: relative;
       padding: 20px;
-      background: var(--background-light); /* Assuming this is a lighter color */
+      background: var(--background-light);
       border-radius: var(--border-radius);
-      max-width: 800px; /* Adjusted for potential image width */
+      max-width: 800px;
       z-index: 2;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       overflow-y: auto;

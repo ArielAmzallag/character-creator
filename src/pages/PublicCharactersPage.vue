@@ -4,13 +4,11 @@
         <aside class="filter-search">
             <input type="text" v-model="searchQuery" placeholder="Search characters..." class="search-bar"/>
 
-            <!-- Sorting Options -->
             <select v-model="sortOrder">
                 <option value="asc">Likes Ascending</option>
                 <option value="desc">Likes Descending</option>
             </select>
             
-            <!-- Filter by Gender -->
             <select v-model="filterGender">
               <option value="">Any Gender</option>
               <option value="Male">Male</option>
@@ -18,13 +16,11 @@
               <option value="Other">Other</option>
             </select>
             
-            <!-- Filter by Universe -->
             <select v-model="filterUniverse">
               <option value="">Any Universe</option>
               <option v-for="universe in uniqueUniverses" :key="universe" :value="universe">{{ universe }}</option>
             </select>
             
-            <!-- Filter by Skills (example of multi-select) -->
             <select v-model="filterSkills" multiple>
               <option v-for="skill in uniqueSkills" :key="skill" :value="skill">{{ skill }}</option>
             </select>
@@ -73,7 +69,6 @@
   const sortOrder = ref('asc');
   const userDoc = ref(null);
   
-  // Auth state change handling to track the current user
   onAuthStateChanged(auth, (user) => {
     currentUser.value = user ? user : null;
     if (user) {
@@ -91,7 +86,6 @@ const uniqueSkills = computed(() => {
 });
   
 
-// Modified part of the script
 onMounted(() => {
   const q = query(collection(db, 'characters'), where('isPublic', '==', true));
   onSnapshot(q, (querySnapshot) => {
@@ -114,7 +108,6 @@ onMounted(() => {
 });
 
   
-  // Check if the current user has liked the characters
   const checkUserLikes = async (chars) => {
   for (const character of chars) {
     const likesRef = collection(db, 'likes');
@@ -122,7 +115,6 @@ onMounted(() => {
     const querySnapshot = await getDocs(q);
     character.isLikedByCurrentUser = !querySnapshot.empty;
   }
-  // Force update to ensure reactivity
   characters.value = [...chars];
 };
   
@@ -133,12 +125,10 @@ const toggleLikeCharacter = async (character) => {
   const querySnapshot = await getDocs(q);
   
   if (querySnapshot.empty) {
-    // Like the character
     await addDoc(likesRef, { characterId: character.id, userId: currentUser.value.uid });
     await updateDoc(characterDocRef, { likeCount: increment(1) });
     character.likeCount = (character.likeCount || 0) + 1;
   } else {
-    // Unlike the character
     querySnapshot.forEach(async (docSnapshot) => {
       await deleteDoc(doc(db, 'likes', docSnapshot.id));
     });
@@ -146,22 +136,16 @@ const toggleLikeCharacter = async (character) => {
     character.likeCount = (character.likeCount || 0) - 1;
   }
 
-  // Toggle like status in local state for immediate UI update
   character.isLikedByCurrentUser = !character.isLikedByCurrentUser;
 
-  // Ensure reactivity by updating the characters array
   characters.value = characters.value.map(c => c.id === character.id ? { ...c, isLikedByCurrentUser: character.isLikedByCurrentUser, likeCount: character.likeCount } : c);
 };
 
 
-
-  
-  // Selecting a character to view in the popup
   const selectCharacter = (character) => {
     selectedCharacter.value = character;
   };
   
-  // Computed property to filter characters based on search query and other filters
   const filteredCharacters = computed(() => {
   return characters.value
     .filter(character => {
@@ -190,29 +174,29 @@ button{
       padding: 1rem;
       display: flex;
       flex-direction: column;
-      gap: 1rem; // Ensures consistent spacing between elements
+      gap: 1rem;
       border-right: 2px solid #ddd;
       justify-content: flex-start;
       overflow-y: auto; 
   
       input, select {
         padding: 0.5rem;
-        border: 1px solid #ccc; // Subtle border
-        border-radius: 0.25rem; // Rounded corners for a modern look
-        font-size: 1rem; // Larger font size for better readability
-        width: 100%; // Ensures full width
-        box-sizing: border-box; // Includes padding and border in the element's total width and height
+        border: 1px solid #ccc;
+        border-radius: 0.25rem;
+        font-size: 1rem;
+        width: 100%;
+        box-sizing: border-box;
   
         &:focus {
-          border-color: #007bff; // Highlight focus for better accessibility
-          outline: none; // Removes the default focus outline
-          box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); // Subtle glow effect
+          border-color: #007bff;
+          outline: none;
+          box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
         }
       }
   
       select[multiple] {
-        height: auto; // Adjust height based on content
-        min-height: 100px; // Minimum height to show multiple options
+        height: auto;
+        min-height: 100px;
       }
     }
   
@@ -229,10 +213,10 @@ button{
           justify-content: space-between;
           align-items: center;
           padding: 0.5rem;
-          border-bottom: 1px solid #eee; // Adds a subtle divider between items
+          border-bottom: 1px solid #eee;
   
           &:last-child {
-            border-bottom: none; // Removes divider from the last item
+            border-bottom: none;
           }
   
           div {
@@ -242,8 +226,8 @@ button{
   
           .like-icon {
             cursor: pointer;
-            width: 24px; // Adjust as per icon size
-            height: 24px; // Adjust as per icon size
+            width: 24px;
+            height: 24px;
 
 
   
@@ -255,9 +239,9 @@ button{
         }
 
         .creator-info {
-            color: #555; /* A lighter shade for less emphasis */
-            font-size: 0.8rem; /* A smaller font size */
-            margin-top: 0.5rem; /* Add some space between the name and the creator info */
+            color: #555;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
           }
           
       }
