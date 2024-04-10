@@ -19,4 +19,5 @@ Uses Vue, Javascript, PHP, Firebase,
 Ariel,
 Adel,
 Ben,
-Safa
+Safa,
+Elie
