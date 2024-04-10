@@ -2,44 +2,51 @@
   <MainLayout>
     <h1>Explore Characters</h1>
     <div class="characters-grid">
-      <div class="character-card" v-for="character in characters" :key="character.id">
+      <div class="character-card" v-for="character in randomCharacters" :key="character.id">
         <img :src="character.imageUrl" :alt="character.name" class="character-image">
         <h2>{{ character.name }}</h2>
         <p>{{ character.description }}</p>
-        <a :href="character.detailLink">Learn More</a>
+        <a :href="`/characters/${character.id}`">Learn More</a>
       </div>
     </div>
     <p>Discover your favorite characters from stories, video games, tabletop RPGs, and more.</p>
   </MainLayout>
 </template>
 
-
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import MainLayout from '../layout/MainLayout.vue'
+import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore'
 
-// Use the `new URL` syntax for importing static assets with Vite
-const aerithImage = new URL('../assets/img/aerith.png', import.meta.url).href;
-const geraltImage = new URL('../assets/img/geralt.png', import.meta.url).href;
+const db = getFirestore();
+const characters = ref([]);
+const randomCharacters = ref([]);
 
-const characters = ref([
-  {
-    id: 1,
-    name: 'Aerith Gainsborough',
-    description: 'A kind and caring florist from Final Fantasy VII, with a mysterious past.',
-    imageUrl: aerithImage,
-    detailLink: '/characters/aerith'
-  },
-  {
-    id: 2,
-    name: 'Geralt of Rivia',
-    description: 'A monster hunter for hire from The Witcher series, known as the White Wolf.',
-    imageUrl: geraltImage,
-    detailLink: '/characters/geralt'
-  },
-  // Add more characters as needed
-])
+// Fetch all public characters and randomly pick two
+const loadRandomCharacters = async () => {
+  const q = query(collection(db, 'characters'), where('isPublic', '==', true));
+  const querySnapshot = await getDocs(q);
+  const allCharacters = querySnapshot.docs.map(doc => {
+    const data = doc.data();
+    return {
+      id: doc.id,
+      name: data.name,
+      description: data.description,
+      imageUrl: data.imageUrl,
+      detailLink: `/characters/${doc.id}`
+    };
+  });
+  // Randomly pick two characters
+  for (let i = 0; i < 2 && allCharacters.length; i++) {
+    const randomIndex = Math.floor(Math.random() * allCharacters.length);
+    randomCharacters.value.push(allCharacters[randomIndex]);
+    allCharacters.splice(randomIndex, 1); // Remove the picked character
+  }
+};
+
+onMounted(loadRandomCharacters);
 </script>
+
 
 
 <style lang="scss" scoped>

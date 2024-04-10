@@ -8,6 +8,7 @@ import VerifyMail from '../pages/VerifyMail.vue';
 import ProfilePage from '../pages/ProfilePage.vue';
 import CharacterCreatorPage from '../pages/CharacterCreatorPage.vue';
 import CompendiumPage from '../pages/CompendiumPage.vue';
+import PublicCharactersPage from '../pages/PublicCharactersPage.vue';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const routes = [
@@ -58,6 +59,11 @@ const routes = [
     path: '/compendium',
     name: 'Compendium',
     component: CompendiumPage
+  },
+  {
+    path: '/public-characters',
+    name: 'PublicCharacters',
+    component: PublicCharactersPage
   }
 
 ]
