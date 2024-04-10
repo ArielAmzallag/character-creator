@@ -11,6 +11,8 @@ The feed showcases three random characters.
 
 Users can sign in and register to gain access to the feed. You can identify using your email or with your Google account.
 
+Registered user can 'like' a public character, showing their appreciation of them.
+
 Uses Vue, Javascript, PHP, Firebase, 
 
 # Group members:
