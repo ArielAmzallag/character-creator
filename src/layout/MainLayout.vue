@@ -7,6 +7,7 @@
             <li v-if="!isLoggedIn"><router-link to="/register">Register</router-link></li>
             <li v-if="!isLoggedIn"><router-link to="/sign-in">Sign-In</router-link></li>
             <li v-if="isLoggedIn"><router-link to="/character-creator">Character Creator</router-link></li>
+            <li v-if="isLoggedIn"><router-link to="/compendium">Compendium</router-link></li>
             <li><router-link to="/feed">Feed</router-link></li>
             <li v-if="isLoggedIn"><router-link to="/profile">Profile</router-link></li>
             <li v-if="userEmail">{{ userEmail }}</li>

@@ -11,11 +11,13 @@
   -moz-osx-font-smoothing: grayscale;
 
   --primary-color: #0A3A62;
+  --primary-color-dark: #09348B;
   --primary-hover: #165788;
   --secondary-color: #4c3a51;
   --secondary-color-dark: #3a3146; 
   --accent-color: #5a4870;
   --background-color: #1e1e2f;
+  --background-color-lighter: #212133;
   --background-light: #f4f1ed;
   --text-color: rgba(255, 255, 255, 0.87);
   --text-dark: #213547;

@@ -7,6 +7,7 @@ import FeedPage from '../pages/FeedPage.vue';
 import VerifyMail from '../pages/VerifyMail.vue';
 import ProfilePage from '../pages/ProfilePage.vue';
 import CharacterCreatorPage from '../pages/CharacterCreatorPage.vue';
+import CompendiumPage from '../pages/CompendiumPage.vue';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const routes = [
@@ -52,6 +53,11 @@ const routes = [
     path: '/character-creator',
     name: 'CharacterCreator',
     component: CharacterCreatorPage
+  },
+  {
+    path: '/compendium',
+    name: 'Compendium',
+    component: CompendiumPage
   }
 
 ]
