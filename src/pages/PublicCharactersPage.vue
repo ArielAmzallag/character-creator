@@ -21,9 +21,10 @@
               <option v-for="universe in uniqueUniverses" :key="universe" :value="universe">{{ universe }}</option>
             </select>
             
-            <select v-model="filterSkills" multiple>
+            <select v-model="filterSkills">
+              <option value="">Any Skill</option>
               <option v-for="skill in uniqueSkills" :key="skill" :value="skill">{{ skill }}</option>
-            </select>
+            </select>              
           </aside>
           
           <div class="character-list">
@@ -64,7 +65,7 @@
   const searchQuery = ref('');
   const filterGender = ref('');
   const filterUniverse = ref('');
-  const filterSkills = ref([]);
+  const filterSkills = ref([]); 
   const currentUser = ref(null);
   const sortOrder = ref('asc');
   const userDoc = ref(null);
@@ -81,8 +82,8 @@
 });
 
 const uniqueSkills = computed(() => {
-  const skills = new Set(characters.value.flatMap(character => character.skills || []));
-  return Array.from(skills);
+  const skills = new Set(characters.value.flatMap(character => character.skills));
+  return Array.from(skills).filter(skill => skill); // Ensure empty strings are not included
 });
   
 
@@ -152,7 +153,11 @@ const toggleLikeCharacter = async (character) => {
       const matchesQuery = character.name.toLowerCase().includes(searchQuery.value.toLowerCase());
       const matchesGender = filterGender.value ? character.gender === filterGender.value : true;
       const matchesUniverse = filterUniverse.value ? character.universe === filterUniverse.value : true;
-      const matchesSkills = filterSkills.value.length ? filterSkills.value.every(skill => character.skills?.includes(skill)) : true;
+      let matchesSkills = true;
+      if (filterSkills.value !== "") { // Checks if a specific skill is selected
+        matchesSkills = character.skills?.includes(filterSkills.value);
+      }
+
       return matchesQuery && matchesGender && matchesUniverse && matchesSkills;
     })
     .sort((a, b) => sortOrder.value === 'asc' ? a.likeCount - b.likeCount : b.likeCount - a.likeCount); // Sort based on sortOrder

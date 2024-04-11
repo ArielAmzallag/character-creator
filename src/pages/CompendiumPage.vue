@@ -116,7 +116,7 @@
           <div class="character-visibility">
             <span>This character is <strong>{{ selectedCharacter.isPublic ? 'Public' : 'Private' }}</strong>.</span>
           </div>
-          <button @click="deleteCharacter(selectedCharacter.id)" class="delete-character-button">Delete Character</button>
+          <button id="delete" @click="deleteCharacter(selectedCharacter.id)" class="delete-character-button">Delete Character</button>
           
         </section>
       </div>
@@ -300,6 +300,9 @@ onUnmounted(() => {
 <style lang="scss" scoped>
 button{
   background: none ;
+}
+#delete{
+  background-color: var(--primary-hover);
 }
 .character-dashboard {
     display: flex;

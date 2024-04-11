@@ -127,7 +127,7 @@
     skills: [''],
     notes: '',
     imageUrl: '',
-    isPublic: false
+    isPublic: null
   });
   
   const characterImage = ref(null);
@@ -168,18 +168,38 @@
       alert('You must be logged in to create a character.');
       return;
     }
+    
+  // Validate required fields
+  if (!character.value.name.trim()) {
+    alert('Character name is required.');
+    return;
+  }
+  if (!characterImage.value) {
+    alert('Character image is required.');
+    return;
+  }
+
+  if (character.value.isPublic === null) {
+    alert('Please choose whether to make your character public.');
+    return;
+  }
   
+
     await uploadCharacterImage();
     character.value.creatorName = auth.currentUser.displayName || "Anonymous";
     character.value.creationDate = new Date().toISOString();
     character.value.createdBy = auth.currentUser.uid;
     character.value.likeCount = 0;
   
-    await addDoc(collection(db, 'characters'), character.value).then(() => {
-      alert('Character created successfully!');
-    }).catch(error => {
-      console.error("Error adding character: ", error);
-    });
+    await addDoc(collection(db, 'characters'), character.value)
+      .then(() => {
+        alert('Character created successfully!');
+      })
+      .catch(error => {
+        console.error("Error adding character: ", error);
+        alert("Failed to create character.");
+      });
+
   };
   </script>
       
