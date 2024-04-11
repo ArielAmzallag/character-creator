@@ -6,14 +6,18 @@
         <p v-if="errMsg">{{ errMsg }}</p>
         <p><button @click="register">Submit</button></p>
         <p><button @click="signInWithGoogle">Sign In With Google</button></p>
+        <!-- Update this button to navigate to the password reset page -->
+        <p><button @click="navigateToPasswordReset">Forgot Your Password?</button></p>
     </MainLayout>
-    </template>
+</template>
+
     <script setup>
     import MainLayout from '../layout/MainLayout.vue';
     import { ref } from 'vue';
     import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
     import { useRouter } from 'vue-router'
     import { provide } from 'vue';
+
 
     const email = ref("");
     const password = ref("");
@@ -65,5 +69,9 @@ const signInWithGoogle = () => {
         console.log(error.code);
         alert(error.message);
     });
+};
+
+const navigateToPasswordReset = () => {
+  router.push('/password-reset');
 };
 </script>

@@ -9,6 +9,7 @@ import ProfilePage from '../pages/ProfilePage.vue';
 import CharacterCreatorPage from '../pages/CharacterCreatorPage.vue';
 import CompendiumPage from '../pages/CompendiumPage.vue';
 import PublicCharactersPage from '../pages/PublicCharactersPage.vue';
+import PasswordResetForm from '../pages/PasswordResetForm.vue';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const routes = [
@@ -64,7 +65,10 @@ const routes = [
     path: '/public-characters',
     name: 'PublicCharacters',
     component: PublicCharactersPage
-  }
+  },
+  { path: '/password-reset', 
+  name: 'PasswordReset',
+  component: PasswordResetForm },
 
 ]
 

@@ -23,24 +23,30 @@
             <img :src="selectedCharacter.imageUrl" alt="Character Image" class="character-image">
           </div>
           <div v-if="selectedCharacter.alias" class="character-alias">
-            <span class="title">Alias:</span>
+            <span class="title">Alias:
+              <button @click="() => updateSimpleField('alias')"><img src="../assets/svg/edit-icon.svg" alt="Edit" /></button>
+            </span>
             <span class="value">{{ selectedCharacter.alias }}</span>
-            <button @click="() => updateSimpleField('alias')"><img src="../assets/svg/edit-icon.svg" alt="Edit" /></button>
           </div>
           <div v-if="selectedCharacter.gender" class="character-gender">
-            <span class="title">Gender:</span>
+            <span class="title">Gender:
+              <button @click="() => updateSimpleField('gender')"><img src="../assets/svg/edit-icon.svg" alt="Edit" /></button>
+            </span>
             <span class="value">{{ selectedCharacter.gender }}</span>
-            <button @click="() => updateSimpleField('gender')"><img src="../assets/svg/edit-icon.svg" alt="Edit" /></button>
+
           </div>
           <div v-if="selectedCharacter.universe" class="character-universe">
-            <span class="title">Universe:</span>
+            <span class="title">Universe:
+              <button @click="() => updateSimpleField('universe')"><img src="../assets/svg/edit-icon.svg" alt="Edit" /></button>
+            </span>
             <span class="value">{{ selectedCharacter.universe }}</span>
-            <button @click="() => updateSimpleField('universe')"><img src="../assets/svg/edit-icon.svg" alt="Edit" /></button>
           </div>
           <div v-if="selectedCharacter.description" class="character-description">
-            <span class="title">Description:</span>
+            <span class="title">Description:
+              <button @click="() => updateSimpleField('description')"><img src="../assets/svg/edit-icon.svg" alt="Edit" /></button>
+            </span>
             <p class="value">{{ selectedCharacter.description }}</p>
-            <button @click="() => updateSimpleField('description')"><img src="../assets/svg/edit-icon.svg" alt="Edit" /></button>
+
           </div>
           <div class="character-section character-attributes">
             <h3>Attributes
@@ -84,9 +90,6 @@
             </h3>
             <table class="equipment-table">
                 <thead>
-                  <tr>
-                    <th>Item</th>
-                  </tr>
                 </thead>
                 <tbody>
                   <tr v-for="item in selectedCharacter.equipment" :key="item">
@@ -531,7 +534,7 @@ button{
       }
       
 
-      h3 {
+      h2, h3, .title {
         display: flex;
         justify-content: space-between;
         align-items: center;

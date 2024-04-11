@@ -39,8 +39,8 @@
         </div>
   
         <div class="profile-action">
-          <button @click="sendPasswordResetEmail">Change Password</button>
-        </div>
+          <button @click="navigateToPasswordReset">Change Password</button>
+        </div>        
       </div>
     </MainLayout>
   </template>
@@ -49,13 +49,15 @@
   <script setup>
   import MainLayout from '../layout/MainLayout.vue';
   import { ref, onMounted } from 'vue';
-  import { getAuth, updateProfile, sendPasswordResetEmail, onAuthStateChanged } from 'firebase/auth';
+  import { getAuth, updateProfile, onAuthStateChanged } from 'firebase/auth';
+  import { useRouter } from 'vue-router'
   
   const auth = getAuth();
   const user = ref(auth.currentUser);
   const email = ref(user.value?.email || '');
   const username = ref(user.value?.displayName || '');
   const bio = ref('');
+  const router = useRouter()
   
   const updateUsername = async () => {
     if (username.value) {
@@ -74,18 +76,6 @@
   const updateBio = async () => {
     console.log('Bio updated to:', bio.value);
     // Add your bio updating logic here
-  };
-  
-  const sendPasswordReset = async () => {
-    if (email.value) {
-      try {
-        await sendPasswordResetEmail(auth, email.value);
-        alert('Password reset email sent!');
-      } catch (error) {
-        console.error('Error sending password reset email:', error);
-        alert('There was a problem sending the password reset email.');
-      }
-    }
   };
   
   const validateAndUpdateProfile = async () => {
@@ -127,6 +117,10 @@
       }
     });
   });
+
+  const navigateToPasswordReset = () => {
+  router.push('/password-reset');
+};
   </script>
   
   
