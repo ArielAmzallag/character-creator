@@ -1,6 +1,7 @@
 <template>
   <MainLayout>
     <div class="feed-container">
+      <!-- Latest Characters -->
       <div class="latest-characters">
         <h2>Latest Characters</h2>
         <ul>
@@ -11,8 +12,9 @@
           </li>
         </ul>
       </div>
-      <!-- Including Room Navigation and Character Selection in the Feed -->
-      <ChatComponent class="chat-section" />
+
+      <!-- Forum Component -->
+      <Forum class="forum-section" />
     </div>
   </MainLayout>
 </template>
@@ -21,20 +23,12 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import MainLayout from '../layout/MainLayout.vue';
-import ChatComponent from '../components/ChatComponent.vue';
-import Room from '../components/Room.vue';
-import RoomNavbar from '../components/RoomNavbar.vue';
-import CharacterSelector from '../components/CharacterSelector.vue';
-import latestCharactersComponent from '../components/LatestCharacterComponent.vue';
+import Forum from '../components/Forum.vue';
 import { getFirestore, collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 
 // Initialize Firestore
 const db = getFirestore();
-
-// Data properties
 const latestCharacters = ref([]);
-const rooms = ref([]);
-const selectedRoom = ref(null);
 
 // Fetch the latest characters from Firestore
 const fetchLatestCharacters = async () => {
@@ -46,30 +40,7 @@ const fetchLatestCharacters = async () => {
     console.error("Error fetching latest characters: ", error);
   }
 };
-
-// // Fetch the list of rooms from your Laravel backend
-// const fetchRooms = async () => {
-//   try {
-//     const response = await fetch('http://localhost:5174/api/rooms');
-//     if (response.ok) {
-//       rooms.value = await response.json();
-//     } else {
-//       throw new Error('Failed to fetch rooms');
-//     }
-//   } catch (error) {
-//     console.error('Error fetching rooms:', error);
-//   }
-// };
-
-// // Handle room selection
-// const handleRoomSelected = (room) => {
-//   selectedRoom.value = room;
-// };
-
- onMounted(() => {
-  fetchLatestCharacters();
-//   fetchRooms();
-});
+onMounted(fetchLatestCharacters);
 </script>
 
 

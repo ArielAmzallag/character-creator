@@ -24,7 +24,8 @@
             <select v-model="filterSkills">
               <option value="">Any Skill</option>
               <option v-for="skill in uniqueSkills" :key="skill" :value="skill">{{ skill }}</option>
-            </select>              
+            </select>
+                         
           </aside>
           
           <div class="character-list">
@@ -83,9 +84,10 @@
 
 const uniqueSkills = computed(() => {
   const skills = new Set(characters.value.flatMap(character => character.skills));
-  return Array.from(skills).filter(skill => skill); // Ensure empty strings are not included
+  console.log('Skills:', Array.from(skills));
+  return Array.from(skills).filter(skill => skill);
 });
-  
+
 
 onMounted(() => {
   const q = query(collection(db, 'characters'), where('isPublic', '==', true));

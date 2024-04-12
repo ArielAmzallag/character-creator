@@ -84,20 +84,33 @@
               </ul>
           </div>
 
-          <div v-if="selectedCharacter.equipment.length" class="character-equipment">
-            <h3>Equipment
-              <button @click="() => updateArrayField('equipment')" class="edit-icon"><img src="../assets/svg/edit-icon.svg" alt="Edit" /></button>
+          <div class="character-equipment" v-if="selectedCharacter && selectedCharacter.equipment && selectedCharacter.equipment.filter(item => item.trim() !== '').length > 0">
+            <h3>
+              Equipment
+              <button @click="() => updateArrayField('equipment')" class="edit-icon">
+                <img src="../assets/svg/edit-icon.svg" alt="Edit" />
+              </button>
             </h3>
             <table class="equipment-table">
-                <thead>
-                </thead>
-                <tbody>
-                  <tr v-for="item in selectedCharacter.equipment" :key="item">
-                    <td>{{ item }}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <thead></thead>
+              <tbody>
+                <tr v-for="item in selectedCharacter.equipment" :key="item" v-if="item && item.trim() !== ''">
+                  <td>{{ item }}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
+      
+          <div class="no-equipment-message" v-else>
+            <h3>
+              Equipment
+              <button @click="() => updateArrayField('equipment')" class="edit-icon">
+                <img src="../assets/svg/edit-icon.svg" alt="Edit" />
+              </button>
+            </h3>
+            This character has no equipment.
+          </div>
+    
           
           <div v-if="selectedCharacter.background" class="character-background">
             <h3>Background
