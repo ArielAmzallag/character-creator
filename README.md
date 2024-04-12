@@ -15,6 +15,8 @@ Registered user can 'like' a public character, showing their appreciation of the
 
 Uses Vue, Javascript, PHP, Firebase, 
 
+Lien figma: https://www.figma.com/community/file/1360549258984596825/compendium-of-infinite-nothing
+
 # Group members:
 Ariel,
 Adel,
