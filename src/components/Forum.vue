@@ -5,7 +5,7 @@
         <CharacterSwitcher :characters="characters" @characterSelected="selectCharacter" />
       </aside>
       <div class="chat-container">
-        <ChatComponent :roomId="selectedRoom" :characterId="selectedCharacter" />
+        <ForumChatComponent :roomId="selectedRoom" :characterId="selectedCharacter" />
       </div>
     </div>
   </template>
@@ -16,6 +16,7 @@
   import CharacterSwitcher from './CharacterSwitcher.vue';
   import ForumChatComponent from './ForumChatComponent.vue';
   import firebaseService from '../method/firebaseService';
+  import ChatComponent from './ChatComponent.vue';
   
   const rooms = ref([]);
   const characters = ref([]);
@@ -42,6 +43,8 @@
     await fetchRooms();
     await fetchCharacters();
   });
+
+  
   </script>
   
   <style>

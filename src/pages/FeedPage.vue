@@ -15,6 +15,7 @@
 
       <!-- Forum Component -->
       <Forum class="forum-section" />
+      <ChatComponent class="chat-section" />
     </div>
   </MainLayout>
 </template>
@@ -23,6 +24,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import MainLayout from '../layout/MainLayout.vue';
+import ChatComponent from '../components/ChatComponent.vue';
 import Forum from '../components/Forum.vue';
 import { getFirestore, collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 

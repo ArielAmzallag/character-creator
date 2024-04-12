@@ -21,7 +21,7 @@
   import { ref, onMounted } from 'vue';
   import { formatDistanceToNow } from 'date-fns'; // For date formatting
   import { sendMessage, subscribeToChat, clearChat } from '../method/ChatService';
-  import { getAuth } from 'firebase/auth';
+ import { getAuth, onAuthStateChanged } from "firebase/auth";
   
   const auth = getAuth();
   const messages = ref([]);
@@ -45,11 +45,17 @@
   };
 
   const handleClearChat = () => {
-  const password = prompt("Enter password to clear chat:");
-  clearChat(password)
-    .then(() => alert("Chat cleared successfully."))
-    .catch(error => alert(error.message));
+  if (confirm("Are you sure you want to clear the chat? This action cannot be undone.")) {
+    clearChat()
+      .then(() => {
+        messages.value = []; // Clear the local messages array immediately
+        alert("Chat cleared successfully.");
+      })
+      .catch(error => alert(error.message));
+  }
 };
+
+
   
   const formatDate = (date) => {
     return formatDistanceToNow(date, { addSuffix: true });
